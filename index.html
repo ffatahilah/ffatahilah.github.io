@@ -769,7 +769,26 @@
   overflow: auto;
 }
     pre { margin: 0; }
+.hero-reveal > * {
+  opacity: 0;
+  transform: translateY(20px);
+  filter: blur(6px);
+}
 
+/* Active state */
+.hero-reveal.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition: all 0.8s ease;
+}
+
+/* Stagger effect */
+.hero-reveal.visible > *:nth-child(1) { transition-delay: 0.1s; }
+.hero-reveal.visible > *:nth-child(2) { transition-delay: 0.2s; }
+.hero-reveal.visible > *:nth-child(3) { transition-delay: 0.3s; }
+.hero-reveal.visible > *:nth-child(4) { transition-delay: 0.4s; }
+.hero-reveal.visible > *:nth-child(5) { transition-delay: 0.5s; }
   </style>
   <script>
     const texts = ["ffatahilah@portolio", "Backend Developer"];
@@ -809,7 +828,7 @@
   </script>
 </head>
 <body>
-
+<div class="noise">
   <!-- Background effects -->
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -840,7 +859,7 @@
   <main>
 
     <!-- HERO -->
-    <section id="hero">
+    <section id="hero" class="hero-reveal">
       <div class="terminal-badge">Available for opportunities</div>
 
       <h1>
@@ -878,6 +897,7 @@
         </div>
       </div>
     </section>
+	</div>
 
     <!-- ABOUT + CODE SNIPPET -->
     <section id="about">
@@ -1428,6 +1448,14 @@ maximize.onclick = () => {
   win.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
   });
+
+  window.addEventListener('load', () => {
+    const hero = document.querySelector('.hero-reveal');
+    setTimeout(() => {
+      hero.classList.add('visible');
+    }, 200);
+  });
+</script>
   </script>
 </body>
 </html>
