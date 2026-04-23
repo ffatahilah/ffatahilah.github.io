@@ -789,6 +789,20 @@
 .hero-reveal.visible > *:nth-child(3) { transition-delay: 0.3s; }
 .hero-reveal.visible > *:nth-child(4) { transition-delay: 0.4s; }
 .hero-reveal.visible > *:nth-child(5) { transition-delay: 0.5s; }
+@media (max-width: 768px) {
+  .code-inner {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px; /* space for scroll */
+  }
+
+  .code-inner pre {
+    display: inline-block;   /* KEY FIX */
+    min-width: max-content;  /* allows full width */
+    white-space: pre;        /* preserve formatting */
+  }
+}
   </style>
   <script>
     const texts = ["ffatahilah@portolio", "Backend Developer"];
