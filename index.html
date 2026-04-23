@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fahrih Fatahilah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" type="image/x-icon" href="https://images.icon-icons.com/2107/PNG/512/file_type_light_json_icon_130455.png">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --bg2: #0f1420;
+      --bg3: #141926;
+      --surface: #1a2035;
+      --surface2: #212740;
+      --border: #2a3450;
+      --accent: #00d4aa;
+      --accent2: #0088ff;
+      --accent3: #7c3aed;
+      --text: #e2e8f4;
+      --muted: #7a8ab0;
+      --dim: #4a5570;
+      --green: #00d4aa;
+      --blue: #0088ff;
+      --purple: #7c3aed;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glowing orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.12;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -200px; }
+    .orb-2 { width: 500px; height: 500px; background: var(--blue); bottom: -100px; right: -100px; }
+    .orb-3 { width: 400px; height: 400px; background: var(--purple); top: 40%; left: 50%; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      background: rgba(10,14,23,0.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--muted); }
+    nav ul {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* LAYOUT */
+    main { position: relative; z-index: 1; }
+
+    section {
+      padding: 100px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 120px;
+    }
+
+    .terminal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+    .terminal-badge::before {
+      content: '▶';
+      font-size: 8px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    h1 .dim { color: var(--dim); font-weight: 300; }
+    h1 .accent { color: var(--accent); }
+    h1 .blue { color: var(--blue); }
+
+    .hero-desc {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 48px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .btn-row { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover { background: #00f2c4; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+    /* STATS ROW */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 72px;
+    }
+    .stat {
+      flex: 1;
+      padding: 28px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-num .accent { color: var(--accent); }
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* SECTION HEADERS */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+    .section-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    h2 {
+      font-size: 42px;
+      font-weight: 600;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    h2 .dim { color: var(--dim); }
+
+    /* TECH STACK */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .tech-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .tech-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      background: var(--surface2);
+    }
+    .tech-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .tech-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      display: block;
+    }
+    .tech-cat {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    .badge-green { background: rgba(0,212,170,0.12); color: var(--accent); border: 1px solid rgba(0,212,170,0.3); }
+    .badge-blue { background: rgba(0,136,255,0.12); color: var(--blue); border: 1px solid rgba(0,136,255,0.3); }
+    .badge-purple { background: rgba(124,58,237,0.12); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+    .badge-yellow { background: rgba(245,158,11,0.12); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+
+    /* EXPERIENCE */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--border) 80%);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 48px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -36px;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .timeline-item.current::before {
+      background: var(--yellow);
+      box-shadow: 0 0 12px var(--yellow);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 6px var(--yellow); }
+      50% { box-shadow: 0 0 20px var(--yellow), 0 0 40px rgba(245,158,11,0.3); }
+    }
+
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: border-color 0.2s;
+    }
+    .exp-card:hover { border-color: var(--accent); }
+    .exp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .exp-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .exp-period {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .exp-company {
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .exp-loc {
+      font-size: 12px;
+      color: var(--dim);
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .exp-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .project-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .project-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    /* CONTACT */
+    #contact { text-align: center; }
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 64px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-card::before { pointer-events: none;
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(0,212,170,0.06), transparent 60%);
+    }
+    .contact-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .contact-title {
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+    .contact-sub {
+      color: var(--muted);
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 32px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--dim);
+    }
+
+    /* Typing animation */
+    .typing {
+      display: inline-block;
+    }
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.9em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .code-block::before {
+      content: '● ● ●';
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      font-size: 10px;
+      color: var(--border);
+      letter-spacing: 4px;
+    }
+    .code-inner { margin-top: 24px; }
+    .kw { color: #c792ea; }
+    .fn { color: #82aaff; }
+    .str { color: #c3e88d; }
+    .cm { color: var(--dim); font-style: italic; }
+    .num { color: #f78c6c; }
+    .prop { color: #ffcb6b; }
+
+    /* Responsive */
+    /* ── RESPONSIVE ─────────────────────────────── */
+
+    /* Tablet & below */
+    @media (max-width: 900px) {
+      /* About: stack vertically */
+      #about > div > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+      }
+      .code-block { margin-bottom: 0; }
+
+      /* Projects: single column */
+      .projects-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      h2 { font-size: 32px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      /* Nav */
+      nav ul { display: none; }
+      nav { padding: 0 4%; }
+
+      /* Sections */
+      section { padding: 72px 4%; }
+
+      /* Hero */
+      #hero { padding-top: 100px; }
+      h1 { font-size: clamp(32px, 9vw, 48px); letter-spacing: -1px; }
+      .hero-desc { font-size: 15px; margin-bottom: 36px; }
+      .btn-row { flex-direction: column; }
+      .btn { justify-content: center; }
+
+      /* Stats */
+      .stats-row { flex-direction: column; margin-top: 48px; }
+      .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 20px 24px; }
+      .stat:last-child { border-bottom: none; }
+      .stat-num { font-size: 28px; }
+
+      /* About */
+      #about > div > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 28px !important;
+      }
+
+      /* Experience */
+      .timeline { padding-left: 20px; }
+      .exp-top { flex-direction: column; gap: 4px; }
+      .exp-period { font-size: 11px; }
+      .exp-card { padding: 20px; }
+      .badge[style*="float:right"] { float: none !important; display: inline-block; margin-top: 4px; }
+
+      /* App pills */
+      .exp-card div[style*="display:flex;gap:10px"] {
+        flex-direction: column;
+      }
+
+      /* Tech grid */
+      .tech-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      /* Projects */
+      .projects-grid { grid-template-columns: 1fr !important; }
+      .project-card { padding: 20px; }
+
+      /* Contact */
+      .contact-card { padding: 40px 24px; }
+      .contact-title { font-size: 32px; }
+      .contact-links { flex-direction: column; align-items: center; }
+      .contact-links .btn { width: 100%; justify-content: center; max-width: 280px; }
+      .contact-sub { font-size: 14px; }
+
+      /* Footer */
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 4%; }
+
+      /* Section header */
+      h2 { font-size: 28px; }
+    }
+
+    /* Small mobile */
+    @media (max-width: 420px) {
+      h1 { font-size: 28px; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .terminal-badge { font-size: 11px; }
+      .exp-card { padding: 16px; }
+      .section-header { margin-bottom: 40px; }
+    }
+
+    /* About section animations */
+    .about-text-block h2 {
+      opacity: 0;
+      transform: translateX(-24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .about-line {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .about-text-block.visible h2 {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .about-text-block.visible .about-line:nth-child(2) {
+      opacity: 1; transform: translateX(0);
+      transition-delay: 0.15s;
+    }
+    .about-text-block.visible .about-line:nth-child(3) {
+      opacity: 1; transform: translateX(0);
+      transition-delay: 0.3s;
+    }
+    .about-text-block.visible .about-line:nth-child(4) {
+      opacity: 1; transform: translateX(0);
+      transition-delay: 0.45s;
+    }
+    .code-block {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s;
+    }
+    .code-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+  <script>
+    const texts = ["ffatahilah@portolio", "Backend Developer"];
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+      let currentText = texts[textIndex];
+
+      if (isDeleting) {
+        charIndex--;
+      } else {
+        charIndex++;
+      }
+
+      document.title = currentText.substring(0, charIndex);
+
+      let speed = isDeleting ? 100 : 200;
+
+      // kalau selesai ngetik
+      if (!isDeleting && charIndex === currentText.length) {
+        speed = 1500; // jeda sebelum hapus
+        isDeleting = true;
+      } 
+      // kalau selesai hapus
+      else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+        speed = 500;
+      }
+
+      setTimeout(typeEffect, speed);
+    }
+
+    window.onload = typeEffect;
+  </script>
+</head>
+<body>
+
+  <!-- Background effects -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="/" class="nav-logo">ffatahilah<span>@</span>portfolio<span>:~$</span></a>
+    <ul id="nav-menu">
+      <li><a href="#about">about</a></li>
+      <li><a href="#experience">experience</a></li>
+      <li><a href="#stack">stack</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+    <button id="nav-toggle" aria-label="Toggle menu" style="display:none;background:none;border:1px solid var(--border);border-radius:4px;padding:6px 10px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1;">&#9776;</button>
+  </nav>
+  <div id="mobile-menu" style="display:none;position:fixed;top:64px;left:0;right:0;z-index:99;background:rgba(10,14,23,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);padding:16px 5%;">
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:0;">
+      <li><a href="#about" class="mobile-nav-link" style="display:block;padding:14px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);">about</a></li>
+      <li><a href="#experience" class="mobile-nav-link" style="display:block;padding:14px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);">experience</a></li>
+      <li><a href="#stack" class="mobile-nav-link" style="display:block;padding:14px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);">stack</a></li>
+      <li><a href="#projects" class="mobile-nav-link" style="display:block;padding:14px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);">projects</a></li>
+      <li><a href="#contact" class="mobile-nav-link" style="display:block;padding:14px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);text-decoration:none;">contact</a></li>
+    </ul>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="hero">
+      <div class="terminal-badge">Available for opportunities</div>
+
+      <h1>
+        <span class="dim">Hello,</span> I build<br>
+        <span class="accent">robust</span> back<span class="blue">end</span><br>
+        <span class="dim">systems.</span>
+      </h1>
+
+      <p class="hero-desc">
+        Backend & Java developer with 4+ years crafting scalable microservices,
+        mobile banking infrastructure, and GIS applications. Currently at bank bjb, Bandung.
+      </p>
+
+      <div class="btn-row">
+        <a href="#experience" class="btn btn-primary">→ View Experience</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num">4<span class="accent">+</span></span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Companies</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">3</span>
+          <span class="stat-label">Banking Systems</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Lines of Code</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT + CODE SNIPPET -->
+    <section id="about">
+      <div class="section-header">
+        <span class="section-tag">// about</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+        <div class="about-text-block">
+          <h2><span class="dim">Who</span> I Am</h2>
+          <p class="about-line" style="color: var(--muted); line-height: 1.8; margin-bottom: 16px;">
+            A backend developer based in Bandung, Indonesia, with hands-on experience
+            building Android mobile applications, Geographic Information Systems (GIS),
+            and Java-based banking infrastructure using Spring Boot.
+          </p>
+          <p class="about-line" style="color: var(--muted); line-height: 1.8; margin-bottom: 24px;">
+            Currently serving as Staff IT Development Digital Business at bank bjb,
+            developing and maintaining reliable, scalable digital banking platforms
+            &mdash; and mentoring junior engineers along the way.
+          </p>
+          <div class="about-line" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <span class="badge badge-green">Backend Dev</span>
+            <span class="badge badge-blue">Java / Spring Boot</span>
+            <span class="badge badge-purple">Microservices</span>
+            <span class="badge badge-yellow">DevOps</span>
+          </div>
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-inner">
+<span class="cm">// Developer.java</span>
+<span class="kw">import</span> java.util.List;
+
+<span class="kw">public class</span> <span class="fn">Developer</span> {
+
+  <span class="kw">private final</span> <span class="fn">String</span> name     = <span class="str">"Backend Dev"</span>;
+  <span class="kw">private final</span> <span class="fn">String</span> location = <span class="str">"Bandung, ID"</span>;
+  <span class="kw">private final</span> <span class="fn">String</span> role     = <span class="str">"Staff Dev IT"</span>;
+
+  <span class="kw">private final</span> <span class="fn">List</span>&lt;<span class="fn">String</span>&gt; skills = <span class="fn">List</span>.of(
+    <span class="str">"Java"</span>, <span class="str">"Spring Boot"</span>,
+    <span class="str">"Docker"</span>, <span class="str">"Elasticsearch"</span>,
+    <span class="str">"Android"</span>, <span class="str">"GIS"</span>
+  );
+
+  <span class="kw">public</span> <span class="fn">String</span> currentStatus() {
+    <span class="kw">return</span> <span class="str">"&#x1F7E2; Active @ bank bjb"</span>;
+  }
+}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-header">
+        <span class="section-tag">// experience</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="timeline">
+
+        <!-- Current -->
+        <div class="timeline-item current">
+          <div class="exp-card">
+            <div class="exp-top">
+              <div>
+                <div class="exp-title">Staff Development IT Digital Business</div>
+                <div class="exp-company">bank bjb</div>
+                <div class="exp-loc">&#128205; Bandung, West Java, Indonesia &middot; On-site</div>
+              </div>
+              <div>
+                <div class="exp-period">Nov 2025 &ndash; Present</div>
+                <span class="badge badge-yellow" style="float:right;margin-top:8px;">Current</span>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:8px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:8px 14px;">
+                <span style="font-size:18px;">&#128242;</span>
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--accent);">Digi by bank bjb</div>
+                  <div style="font-size:11px;color:var(--muted);">Digital Banking App</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.25);border-radius:6px;padding:8px 14px;">
+                <span style="font-size:18px;">&#128179;</span>
+                <div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--blue);">Digicash Merchant bjb</div>
+                  <div style="font-size:11px;color:var(--muted);">Merchant Payment Platform</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="exp-desc" style="margin-bottom:14px;">
+              Handling backend development for two flagship digital products at bank bjb.
+              Responsible for designing and building scalable services, microservices architecture,
+              containerization, and system integration &mdash; while also taking on a mentoring role,
+              supervising and guiding junior developers through technical tasks and code reviews.
+            </p>
+
+            <div class="exp-tags">
+              <span class="tag">Java</span>
+              <span class="tag">Spring Boot</span>
+              <span class="tag">Microservices</span>
+              <span class="tag">Docker</span>
+              <span class="tag">Elasticsearch</span>
+              <span class="tag">Digital Banking</span>
+              <span class="tag">Tech Lead</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PT Adi Data -->
+        <div class="timeline-item">
+          <div class="exp-card">
+            <div class="exp-top">
+              <div>
+                <div class="exp-title">Java Developer</div>
+                <div class="exp-company">PT. Adi Data Informatika</div>
+                <div class="exp-loc">📍 Jakarta, Indonesia · On-site</div>
+              </div>
+              <div>
+                <div class="exp-period">Mar 2023 – Oct 2025</div>
+                <span class="badge badge-blue" style="float:right;margin-top:8px;">2 yrs 8 mos</span>
+              </div>
+            </div>
+            <p class="exp-desc">
+              Developed multichannel mobile banking applications using Java-based frameworks
+              including Spring Boot. Provided DevOps support for Docker containerization and
+              leveraged Docker Swarm for efficient container orchestration. Implemented
+              microservices architecture for scalable and maintainable applications. Integrated
+              Elasticsearch for advanced search and analytics capabilities. Built a mock mobile
+              banking application to simulate real usage for client stress testing.
+            </p>
+            <div class="exp-tags">
+              <span class="tag">Java</span>
+              <span class="tag">Spring Boot</span>
+              <span class="tag">Docker</span>
+              <span class="tag">Docker Swarm</span>
+              <span class="tag">Microservices</span>
+              <span class="tag">Elasticsearch</span>
+              <span class="tag">Mobile Banking</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PT Mediatama -->
+        <div class="timeline-item">
+          <div class="exp-card">
+            <div class="exp-top">
+              <div>
+                <div class="exp-title">Mobile Application Developer</div>
+                <div class="exp-company">PT. Mediatama Kreasi Informatika</div>
+                <div class="exp-loc">📍 Bandung, West Java, Indonesia · Contract</div>
+              </div>
+              <div>
+                <div class="exp-period">Jul 2022 – Mar 2023</div>
+                <span class="badge badge-green" style="float:right;margin-top:8px;">9 mos</span>
+              </div>
+            </div>
+            <p class="exp-desc">
+              In charge of Geographic Information System development for JICA 
+              (Japan International Cooperation Agency), building mobile GIS solutions
+              for governmental and international agency use cases.
+            </p>
+            <div class="exp-tags">
+              <span class="tag">Android</span>
+              <span class="tag">GIS</span>
+              <span class="tag">JICA Project</span>
+              <span class="tag">Mobile Dev</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PT Dwidasa -->
+        <div class="timeline-item">
+          <div class="exp-card">
+            <div class="exp-top">
+              <div>
+                <div class="exp-title">Android Developer</div>
+                <div class="exp-company">PT Dwidasa Samsara Indonesia</div>
+                <div class="exp-loc">📍 Indonesia · Contract</div>
+              </div>
+              <div>
+                <div class="exp-period">Jan 2022 – Apr 2022</div>
+                <span class="badge badge-purple" style="float:right;margin-top:8px;">4 mos</span>
+              </div>
+            </div>
+            <p class="exp-desc">
+              Pengembangan aplikasi Android sebagai bagian dari tim contract,
+              membangun fitur dan komponen mobile application untuk klien.
+            </p>
+            <div class="exp-tags">
+              <span class="tag">Android</span>
+              <span class="tag">Java</span>
+              <span class="tag">Mobile Dev</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section id="stack">
+      <div class="section-header">
+        <span class="section-tag">// tech_stack</span>
+        <div class="section-line"></div>
+      </div>
+
+      <h2 style="margin-bottom: 48px;"><span class="dim">Tools &</span> Technologies</h2>
+
+      <div class="tech-grid">
+        <div class="tech-card">
+          <span class="tech-icon">☕</span>
+          <span class="tech-name">Java</span>
+          <div class="tech-cat">Primary Language</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🍃</span>
+          <span class="tech-name">Spring Boot</span>
+          <div class="tech-cat">Backend Framework</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🐳</span>
+          <span class="tech-name">Docker</span>
+          <div class="tech-cat">Containerization</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔄</span>
+          <span class="tech-name">Docker Swarm</span>
+          <div class="tech-cat">Orchestration</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔍</span>
+          <span class="tech-name">Elasticsearch</span>
+          <div class="tech-cat">Search & Analytics</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">⚙️</span>
+          <span class="tech-name">Microservices</span>
+          <div class="tech-cat">Architecture Pattern</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">📱</span>
+          <span class="tech-name">Android</span>
+          <div class="tech-cat">Mobile Platform</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🗺️</span>
+          <span class="tech-name">GIS</span>
+          <div class="tech-cat">Geographic Systems</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🗄️</span>
+          <span class="tech-name">SQL / Databases</span>
+          <div class="tech-cat">Data Layer</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🏦</span>
+          <span class="tech-name">Banking Systems</span>
+          <div class="tech-cat">Domain Knowledge</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔧</span>
+          <span class="tech-name">DevOps</span>
+          <div class="tech-cat">CI/CD & Ops</div>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🌐</span>
+          <span class="tech-name">REST API</span>
+          <div class="tech-cat">API Design</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-header">
+        <span class="section-tag">// projects</span>
+        <div class="section-line"></div>
+      </div>
+
+      <h2 style="margin-bottom: 48px;"><span class="dim">Notable</span> Work</h2>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <span class="project-icon">🏦</span>
+          <div class="project-title">Multichannel Mobile Banking</div>
+          <p class="project-desc">
+            Developed a full-stack multichannel mobile banking platform using Spring Boot 
+            microservices architecture, handling transactions, authentication, and real-time 
+            account management for banking clients.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Java</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">Microservices</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <span class="project-icon">🔬</span>
+          <div class="project-title">Banking Stress Test Mock App</div>
+          <p class="project-desc">
+            Built a mock mobile banking application specifically designed to simulate 
+            high-load scenarios, enabling clients to perform comprehensive stress testing 
+            of their banking infrastructure.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Java</span>
+            <span class="tag">Load Testing</span>
+            <span class="tag">Banking</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <span class="project-icon">🗺️</span>
+          <div class="project-title">JICA GIS Mobile App</div>
+          <p class="project-desc">
+            Geographic Information System application developed for JICA (Japan International 
+            Cooperation Agency), handling spatial data visualization and location-based 
+            services on Android.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Android</span>
+            <span class="tag">GIS</span>
+            <span class="tag">JICA</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <span class="project-icon">🔍</span>
+          <div class="project-title">Elasticsearch Integration</div>
+          <p class="project-desc">
+            Designed and implemented Elasticsearch-powered search and analytics layer 
+            for banking applications, enabling advanced full-text search, aggregations, 
+            and real-time data insights.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Elasticsearch</span>
+            <span class="tag">Analytics</span>
+            <span class="tag">Search</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <span class="project-icon">🐳</span>
+          <div class="project-title">Docker Swarm Infrastructure</div>
+          <p class="project-desc">
+            Set up and maintained container orchestration using Docker Swarm for 
+            microservices deployment, ensuring high availability, load balancing, and 
+            zero-downtime deployments in production environments.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Docker</span>
+            <span class="tag">Swarm</span>
+            <span class="tag">DevOps</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <span class="project-icon">📱</span>
+          <div class="project-title">Android Mobile Applications</div>
+          <p class="project-desc">
+            Native Android application development across multiple client engagements, 
+            building feature-rich mobile experiences with clean architecture and 
+            modern Android development practices.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Android</span>
+            <span class="tag">Java</span>
+            <span class="tag">Mobile</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-header">
+        <span class="section-tag">// contact</span>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-mono">// let's connect</div>
+        <div class="contact-title">Get In <span style="color:var(--accent)">Touch</span></div>
+        <p class="contact-sub">
+          Open to new opportunities, collaborations, or just a conversation about backend engineering and digital banking systems.
+        </p>
+        <div class="contact-links">
+          <a href="https://linkedin.com/in/fahrih-fatahilah" target="_blank" rel="noopener" class="btn btn-primary" style="position:relative;z-index:2;">LinkedIn ↗</a>
+          <a href="https://github.com/FahrihFatahilah" target="_blank" rel="noopener" class="btn btn-outline" style="position:relative;z-index:2;">GitHub ↗</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>© 2025 Backend Developer · Bandung, Indonesia</span>
+    <span>Built with HTML · CSS · ☕ Java spirit</span>
+  </footer>
+
+  <script>
+    // Smooth scroll for nav
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (!href || href === '#') return;
+        const t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+
+    // Intersection observer for fade-in
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.exp-card, .tech-card, .project-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      obs.observe(el);
+    });
+  
+    // About section observer
+    const aboutObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          aboutObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.about-text-block, .code-block').forEach(el => {
+      aboutObs.observe(el);
+    });
+
+    // Hamburger menu
+    const toggle = document.getElementById('nav-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const isMobile = () => window.innerWidth <= 768;
+
+    function showToggle() {
+      if (isMobile()) {
+        toggle.style.display = 'block';
+      } else {
+        toggle.style.display = 'none';
+        mobileMenu.style.display = 'none';
+      }
+    }
+    showToggle();
+    window.addEventListener('resize', showToggle);
+
+    toggle.addEventListener('click', () => {
+      const open = mobileMenu.style.display === 'block';
+      mobileMenu.style.display = open ? 'none' : 'block';
+      toggle.textContent = open ? '☰' : '✕';
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+        toggle.textContent = '☰';
+      });
+    });
+
+  </script>
+</body>
+</html>
