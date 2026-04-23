@@ -1050,8 +1050,49 @@
   transform: translateY(0);
 }
 
-/* Active nav link */
+/* Active nav underline */
+nav ul { position: relative; }
+#nav-underline {
+  position: absolute;
+  bottom: -4px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: left 0.3s ease, width 0.3s ease;
+  box-shadow: 0 0 8px var(--accent);
+}
 nav a.active { color: var(--accent); }
+
+/* Custom cursor */
+.cur, .cur-dot {
+  position: fixed; pointer-events: none; z-index: 9998;
+  border-radius: 50%; top: 0; left: 0;
+  mix-blend-mode: difference;
+}
+.cur {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--accent);
+  transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  margin: -16px 0 0 -16px;
+}
+.cur-dot {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  margin: -3px 0 0 -3px;
+  transition: transform 0.05s;
+}
+.cur.hover { width: 48px; height: 48px; margin: -24px 0 0 -24px; opacity: 0.5; }
+@media (max-width: 768px) { .cur, .cur-dot { display: none; } }
+@media (pointer: coarse) { .cur, .cur-dot { display: none; } }
+
+/* Page transition overlay */
+#page-flash {
+  position: fixed; inset: 0; z-index: 9997;
+  background: var(--accent);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+#page-flash.flash { opacity: 0.08; }
 
   </style>
   <script>
@@ -1092,6 +1133,11 @@ nav a.active { color: var(--accent); }
   </script>
 </head>
 <body>
+<!-- Custom cursor -->
+<div class="cur" id="cur"></div>
+<div class="cur-dot" id="cur-dot"></div>
+<!-- Page flash -->
+<div id="page-flash"></div>
 <!-- Preloader -->
 <div id="preloader">
   <div class="loader-text">ffatahilah@portfolio:~$ sudo ./portfolio.sh</div>
@@ -1107,12 +1153,13 @@ nav a.active { color: var(--accent); }
   <!-- Navigation -->
   <nav>
     <a href="/" class="nav-logo">ffatahilah<span>@</span>portfolio<span>:~$</span><span class="nav-cursor">_</span></a>
-    <ul id="nav-menu">
+    <ul id="nav-menu" style="position:relative;">
       <li><a href="#about">about</a></li>
       <li><a href="#experience">experience</a></li>
       <li><a href="#stack">stack</a></li>
       <li><a href="#projects">projects</a></li>
       <li><a href="#contact">contact</a></li>
+      <div id="nav-underline" style="left:0;width:0;"></div>
     </ul>
     <div class="nav-right">
       <button id="nav-toggle" aria-label="Toggle menu" style="display:none;background:none;border:1px solid var(--border);border-radius:4px;padding:6px 10px;cursor:pointer;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:16px;line-height:1;">&#9776;</button>
@@ -1715,15 +1762,27 @@ contactObs.observe(document.querySelector('#contact'));
       });
     });
 
-    // Section reveal on scroll + active nav highlight
+    // Section reveal on scroll + active nav highlight + underline
     const allSections = document.querySelectorAll('#about, #experience, #stack, #projects, #contact');
     const navLinks = document.querySelectorAll('#nav-menu a, .mobile-nav-link');
+    const underline = document.getElementById('nav-underline');
+    function moveUnderline(link) {
+      if (!link || !underline) return;
+      const rect = link.getBoundingClientRect();
+      const parent = link.closest('ul').getBoundingClientRect();
+      underline.style.left = (rect.left - parent.left) + 'px';
+      underline.style.width = rect.width + 'px';
+    }
     const sectionObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('in-view');
           const id = e.target.getAttribute('id');
-          if (id) navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+          if (id) {
+            navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+            const active = document.querySelector('#nav-menu a.active');
+            moveUnderline(active);
+          }
         }
       });
     }, { threshold: 0.15 });
@@ -1909,6 +1968,39 @@ contactObs.observe(document.querySelector('#contact'));
     document.documentElement.setAttribute('data-theme', next);
     themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
     localStorage.setItem('theme', next);
+  });
+
+  // Custom cursor
+  const cur = document.getElementById('cur');
+  const curDot = document.getElementById('cur-dot');
+  if (cur && window.matchMedia('(pointer:fine)').matches) {
+    document.addEventListener('mousemove', e => {
+      cur.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+      curDot.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
+    });
+    document.querySelectorAll('a,button,.btn,.tech-card,.project-card,.exp-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+    });
+    document.documentElement.style.cursor = 'none';
+    document.querySelectorAll('a,button').forEach(el => el.style.cursor = 'none');
+  }
+
+  // Parallax orbs
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY * 0.05;
+    document.querySelector('.orb-1').style.transform = `translate(0,${y}px)`;
+    document.querySelector('.orb-2').style.transform = `translate(0,${-y}px)`;
+    document.querySelector('.orb-3').style.transform = `translate(${-y}px,${y * 0.5}px)`;
+  });
+
+  // Page flash on nav click
+  const flash = document.getElementById('page-flash');
+  document.querySelectorAll('#nav-menu a, .mobile-nav-link').forEach(a => {
+    a.addEventListener('click', () => {
+      flash.classList.add('flash');
+      setTimeout(() => flash.classList.remove('flash'), 200);
+    });
   });
 </script>
 </body>
