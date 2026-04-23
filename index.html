@@ -7,6 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="icon" type="image/x-icon" href="https://images.icon-icons.com/2107/PNG/512/file_type_light_json_icon_130455.png">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9RNC8D3371"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9RNC8D3371');
+</script>
   <style>
     :root {
       --bg: #0a0e17;
@@ -1030,6 +1039,20 @@
   0% { width: 0%; }
   100% { width: 100%; }
 }
+/* Section transition */
+#about, #experience, #stack, #projects, #contact {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+#about.in-view, #experience.in-view, #stack.in-view, #projects.in-view, #contact.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Active nav link */
+nav a.active { color: var(--accent); }
+
   </style>
   <script>
     const texts = ["ffatahilah@portolio", "Backend Developer"];
@@ -1691,6 +1714,20 @@ contactObs.observe(document.querySelector('#contact'));
         if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
       });
     });
+
+    // Section reveal on scroll + active nav highlight
+    const allSections = document.querySelectorAll('#about, #experience, #stack, #projects, #contact');
+    const navLinks = document.querySelectorAll('#nav-menu a, .mobile-nav-link');
+    const sectionObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          const id = e.target.getAttribute('id');
+          if (id) navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+        }
+      });
+    }, { threshold: 0.15 });
+    allSections.forEach(s => sectionObs.observe(s));
 
     // Intersection observer for fade-in
     const obs = new IntersectionObserver((entries) => {
