@@ -126,6 +126,19 @@
       justify-content: center;
       padding-top: 120px;
     }
+	
+	.img-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
 
     .terminal-badge {
       display: inline-flex;
@@ -820,7 +833,12 @@
 	  <div>
           <div class="code-block">
             <div class="code-inner">
-			<img src="https://raw.githubusercontent.com/ffatahilah/ffatahilah.github.io/refs/heads/main/code.png" width=800 height=auto >
+			<div class="img-wrapper">
+			  <img 
+				src="https://raw.githubusercontent.com/ffatahilah/ffatahilah.github.io/refs/heads/main/code.png"
+				alt="Code Preview"
+			  />
+			</div>
             </div>
           </div>
     </section>
