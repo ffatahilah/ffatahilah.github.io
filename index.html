@@ -644,16 +644,17 @@
       font-size: 13px;
       line-height: 1.8;
     }
+    .code-inner .muted { color: var(--dim); font-style: italic; }
+    .code-inner .lbl { color: var(--muted); }
+    .code-inner .val { color: var(--accent); }
     .code-line {
       opacity: 0;
-      transform: translateX(-16px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      white-space: pre-wrap;
-      word-break: break-all;
+      transform: translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .code-line.show {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
     }
     .kw { color: #c792ea; }
     .fn { color: #82aaff; }
@@ -825,7 +826,8 @@
     .string { color: #a5d6ff; }
     .method { color: #d2a8ff; }
     .comment { color: #8b949e; }
-	 .mac-window { padding: 0; overflow: hidden; border-radius: 8px; border: 1px solid var(--border); }
+	 .mac-window { padding: 0; overflow: hidden; border-radius: 8px; border: 1px solid var(--border); transition: opacity 0.3s, transform 0.3s; }
+	 .contact-terminal { transition: opacity 0.3s, transform 0.3s; }
 .window-bar {
   height: 36px;
   background: var(--surface);
@@ -899,7 +901,8 @@
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
 }
 
-.mac-window.fullscreen .code-inner {
+.mac-window.fullscreen .code-inner,
+.contact-terminal.fullscreen .contact-terminal-body {
   height: calc(70vh - 36px);
   overflow: auto;
 }
@@ -1193,30 +1196,33 @@
       <span class="btn minimize"></span>
       <span class="btn maximize"></span>
     </div>
-    <span class="window-title">Developer.java</span>
+    <span class="window-title">developer.java — bash</span>
   </div>
 
   <div class="code-inner" id="code-inner">
-    <div class="code-line"><span class="keyword">package</span> com.fahrihfatahilah.portfolio;</div>
-    <div class="code-line">&nbsp;</div>
-    <div class="code-line"><span class="keyword">import</span> java.util.List;</div>
-    <div class="code-line">&nbsp;</div>
-    <div class="code-line"><span class="keyword">public class</span> <span class="type">Developer</span> {</div>
-    <div class="code-line">&nbsp;</div>
-    <div class="code-line">&nbsp;&nbsp;<span class="keyword">private final</span> <span class="type">String</span> name = <span class="string">"Backend Dev"</span>;</div>
-    <div class="code-line">&nbsp;&nbsp;<span class="keyword">private final</span> <span class="type">String</span> location = <span class="string">"Bandung, ID"</span>;</div>
-    <div class="code-line">&nbsp;&nbsp;<span class="keyword">private final</span> <span class="type">String</span> role = <span class="string">"Staff Dev IT"</span>;</div>
-    <div class="code-line">&nbsp;</div>
-    <div class="code-line">&nbsp;&nbsp;<span class="keyword">private final</span> List&lt;<span class="type">String</span>&gt; skills = List.of(</div>
-    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Java"</span>, <span class="string">"Spring Boot"</span>,</div>
-    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Docker"</span>, <span class="string">"Elasticsearch"</span>,</div>
-    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"Android"</span>, <span class="string">"GIS"</span></div>
-    <div class="code-line">&nbsp;&nbsp;);</div>
-    <div class="code-line">&nbsp;</div>
-    <div class="code-line">&nbsp;&nbsp;<span class="keyword">public</span> <span class="type">String</span> <span class="method">currentStatus</span>() {</div>
-    <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"🟢 Active @ bank bjb"</span>;</div>
-    <div class="code-line">&nbsp;&nbsp;}</div>
-    <div class="code-line">}</div>
+    <div><span class="contact-prompt">ffatahilah@portfolio:~/projects$</span> <span id="code-cmd"></span><span class="cursor" id="code-cursor"></span></div>
+    <div class="code-output" id="code-output">
+    
+      <div class="code-line">========================================</div>
+      <div class="code-line">&nbsp;&nbsp;<span class="type">Developer</span> <span class="method">Info</span></div>
+      <div class="code-line">========================================</div>
+      <div class="code-line">&nbsp;&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="string">Backend Dev</span></div>
+      <div class="code-line">&nbsp;&nbsp;Location&nbsp;: <span class="string">Bandung, ID</span></div>
+      <div class="code-line">&nbsp;&nbsp;Role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <span class="string">Staff Dev IT</span></div>
+      <div class="code-line">----------------------------------------</div>
+      <div class="code-line">&nbsp;&nbsp;Skills:</div>
+      <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="string">Java</span></div>
+      <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="string">Spring Boot</span></div>
+      <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="string">Docker</span></div>
+      <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="string">Elasticsearch</span></div>
+      <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="string">Android</span></div>
+      <div class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;→ <span class="string">GIS</span></div>
+      <div class="code-line">----------------------------------------</div>
+      <div class="code-line">&nbsp;&nbsp;Status&nbsp;&nbsp;&nbsp;: <span class="val">🟢 Active @ bank bjb</span></div>
+      <div class="code-line">========================================</div>
+      <div class="code-line">&nbsp;</div>
+      <div class="code-line"><span class="val">✔ Process finished with exit code 0</span></div>
+    </div>
   </div>
 </div>
     </section>
@@ -1719,16 +1725,34 @@ contactObs.observe(document.querySelector('#contact'));
       aboutObs.observe(el);
     });
 
-    // Code lines staggered animation
+    // Code terminal animation
     const codeInner = document.getElementById('code-inner');
     if (codeInner) {
-      const codeLines = codeInner.querySelectorAll('.code-line');
       const codeObs = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            codeLines.forEach((line, i) => {
-              setTimeout(() => line.classList.add('show'), i * 80);
-            });
+            const cmd = 'java -jar developer.jar';
+            const cmdEl = document.getElementById('code-cmd');
+            const cursorEl = document.getElementById('code-cursor');
+            const lines = document.querySelectorAll('#code-output .code-line');
+            let i = 0;
+            function typeCmd() {
+              if (i <= cmd.length) {
+                cmdEl.textContent = cmd.substring(0, i);
+                i++;
+                setTimeout(typeCmd, 50);
+              } else {
+                cursorEl.style.display = 'none';
+                revealLines(0);
+              }
+            }
+            function revealLines(idx) {
+              if (idx < lines.length) {
+                lines[idx].classList.add('show');
+                setTimeout(() => revealLines(idx + 1), 80);
+              }
+            }
+            typeCmd();
             codeObs.disconnect();
           }
         });
@@ -1764,22 +1788,51 @@ contactObs.observe(document.querySelector('#contact'));
         toggle.textContent = '☰';
       });
     });
- document.querySelectorAll('.mac-window').forEach(win => {
+ document.querySelectorAll('.mac-window, .contact-terminal').forEach(win => {
     const close = win.querySelector('.close');
     const minimize = win.querySelector('.minimize');
     const maximize = win.querySelector('.maximize');
+    const body = win.querySelector('.code-inner') || win.querySelector('.contact-terminal-body');
+    if (!body) return;
 
-    close.onclick = () => win.style.display = 'none';
+    let isHidden = false;
+    let isMinimized = false;
 
-    minimize.onclick = () => {
-      const code = win.querySelector('.code-inner');
-      code.style.display = code.style.display === 'none' ? 'block' : 'none';
+    close.onclick = () => {
+      if (isHidden) {
+        win.style.opacity = '1';
+        win.style.transform = 'none';
+        win.style.pointerEvents = 'auto';
+        body.style.display = 'block';
+        isHidden = false;
+        isMinimized = false;
+      } else {
+        win.style.opacity = '0';
+        win.style.transform = 'scale(0.95)';
+        win.style.pointerEvents = 'none';
+        isHidden = true;
+        setTimeout(() => {
+          if (isHidden) {
+            win.style.opacity = '1';
+            win.style.transform = 'none';
+            win.style.pointerEvents = 'auto';
+            body.style.display = 'block';
+            isHidden = false;
+            isMinimized = false;
+          }
+        }, 3000);
+      }
     };
 
-maximize.onclick = () => {
-  win.classList.toggle('fullscreen');
-  win.scrollIntoView({ behavior: 'smooth', block: 'center' });
-};
+    minimize.onclick = () => {
+      isMinimized = !isMinimized;
+      body.style.display = isMinimized ? 'none' : 'block';
+    };
+
+    maximize.onclick = () => {
+      win.classList.toggle('fullscreen');
+      win.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
   });
 
   // Preloader
