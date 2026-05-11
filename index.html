@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fahrih Fatahilah</title>
+  <title>Fahrih Fatahilah — Backend Developer</title>
+  <meta name="description" content="Backend developer based in Bandung, Indonesia. 4+ years building Java microservices, mobile banking infrastructure, and GIS applications. Currently at bank bjb.">
+  <meta name="author" content="Fahrih Fatahilah">
+  <meta property="og:title" content="Fahrih Fatahilah — Backend Developer">
+  <meta property="og:description" content="4+ years building Java microservices, mobile banking infrastructure, and GIS applications. Currently at bank bjb, Bandung.">
+  <meta property="og:image" content="https://raw.githubusercontent.com/ffatahilah/ffatahilah.github.io/refs/heads/main/photo.png">
+  <meta property="og:url" content="https://ffatahilah.github.io">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fahrih Fatahilah — Backend Developer">
+  <meta name="twitter:description" content="4+ years building Java microservices, mobile banking infrastructure, and GIS applications.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/ffatahilah/ffatahilah.github.io/refs/heads/main/photo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="icon" type="image/x-icon" href="https://images.icon-icons.com/2107/PNG/512/file_type_light_json_icon_130455.png">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -76,7 +87,7 @@
       filter: blur(120px);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.12;
+      opacity: 0.07;
     }
     .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -200px; }
     .orb-2 { width: 500px; height: 500px; background: var(--blue); bottom: -100px; right: -100px; }
@@ -165,18 +176,21 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 6px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 4px 0;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--accent);
       margin-bottom: 32px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
     .terminal-badge::before {
       content: '▶';
-      font-size: 8px;
+      font-size: 7px;
     }
 
     h1 {
@@ -285,33 +299,36 @@
       align-items: center;
       gap: 8px;
       padding: 10px 20px;
-      border-radius: 4px;
+      border-radius: 0;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 600;
       text-decoration: none;
       cursor: pointer;
       border: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       transition: all 0.2s;
     }
     .btn-primary {
       background: var(--accent);
       color: var(--bg);
+      border: 1px solid var(--accent);
     }
-    .btn-primary:hover { background: #00f2c4; transform: translateY(-1px); }
+    .btn-primary:hover { background: transparent; color: var(--accent); transform: none; }
     .btn-outline {
       background: transparent;
-      color: var(--text);
+      color: var(--muted);
       border: 1px solid var(--border);
     }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+    .btn-outline:hover { border-color: var(--text); color: var(--text); transform: none; }
 
     /* STATS ROW */
     .stats-row {
       display: flex;
       gap: 0;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 0;
       overflow: hidden;
       margin-top: 72px;
     }
@@ -368,52 +385,71 @@
     /* TECH STACK */
     .tech-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
     }
     .tech-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      transition: all 0.2s;
+      border: none;
+      border-radius: 0;
+      padding: 20px 16px 16px;
+      transition: background 0.2s;
       cursor: default;
+      position: relative;
+      outline: 1px solid var(--border);
     }
-    .tech-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      background: var(--surface2);
+    .tech-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.35s cubic-bezier(0.22,1,0.36,1);
     }
+    .tech-card:hover { background: var(--surface2); }
+    .tech-card:hover::after { width: 100%; }
     .tech-icon {
-      font-size: 24px;
-      margin-bottom: 10px;
+      font-size: 20px;
+      margin-bottom: 12px;
       display: block;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      filter: grayscale(0.2);
     }
+    .tech-card:hover .tech-icon { transform: scale(1.18) rotate(-5deg); filter: grayscale(0); }
     .tech-name {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--text);
       display: block;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
     .tech-cat {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 3px;
     }
     .badge {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 3px;
+      padding: 0 0 2px 0;
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
-      font-weight: 500;
+      font-weight: 600;
       margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      background: none;
+      border: none;
+      border-bottom: 1.5px solid currentColor;
     }
-    .badge-green { background: rgba(0,212,170,0.12); color: var(--accent); border: 1px solid rgba(0,212,170,0.3); }
-    .badge-blue { background: rgba(0,136,255,0.12); color: var(--blue); border: 1px solid rgba(0,136,255,0.3); }
-    .badge-purple { background: rgba(124,58,237,0.12); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
-    .badge-yellow { background: rgba(245,158,11,0.12); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+    .badge-green { color: var(--accent); }
+    .badge-blue  { color: var(--blue); }
+    .badge-purple{ color: #a78bfa; }
+    .badge-yellow{ color: var(--yellow); }
 
     /* EXPERIENCE */
     .timeline {
@@ -457,11 +493,22 @@
     .exp-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 28px;
-      transition: border-color 0.2s;
+      border-radius: 0;
+      padding: 28px 28px 24px 28px;
+      transition: background 0.2s;
+      position: relative;
     }
-    .exp-card:hover { border-color: var(--accent); }
+    /* Left bar grows in from top */
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      left: -1px; top: 0;
+      width: 2px; height: 0;
+      background: var(--accent);
+      transition: height 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .exp-card:hover { background: var(--surface2); }
+    .exp-card:hover::before { height: 100%; }
     .exp-top {
       display: flex;
       justify-content: space-between;
@@ -505,58 +552,82 @@
     }
     .tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 3px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      color: var(--muted);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 0;
+      background: none;
+      border: none;
+      color: var(--dim);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .tag::before {
+      content: '#';
+      color: var(--border);
+      margin-right: 1px;
     }
 
     /* PROJECTS */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
     }
     .project-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 28px;
-      transition: all 0.2s;
+      border: none;
+      border-radius: 0;
+      outline: 1px solid var(--border);
+      padding: 32px 28px 24px;
+      transition: background 0.25s;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
     .project-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--blue));
-      opacity: 0;
-      transition: opacity 0.2s;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--accent);
+      transition: height 0.4s cubic-bezier(0.22,1,0.36,1);
     }
-    .project-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
+    .project-card:hover { background: var(--surface2); }
+    .project-card:hover::before { height: 100%; }
+    /* Project number badge — top-right */
+    .project-card .proj-num {
+      position: absolute;
+      top: 14px; right: 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--border);
+      letter-spacing: 0.1em;
     }
-    .project-card:hover::before { opacity: 1; }
     .project-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
+      font-size: 22px;
+      margin-bottom: 14px;
       display: block;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      filter: grayscale(0.15);
     }
+    .project-card:hover .project-icon { transform: translateY(-3px); filter: grayscale(0); }
     .project-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
     }
     .project-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
-      line-height: 1.65;
+      line-height: 1.7;
       margin-bottom: 20px;
+      flex: 1;
     }
 
     /* CONTACT TERMINAL */
@@ -672,6 +743,93 @@
     .num { color: #f78c6c; }
     .prop { color: #ffcb6b; }
 
+    /* Tech card stagger entrance */
+    .tech-card { animation-fill-mode: both; }
+    .tech-card:nth-child(1) { --stagger: 0ms; }
+    .tech-card:nth-child(2) { --stagger: 40ms; }
+    .tech-card:nth-child(3) { --stagger: 80ms; }
+    .tech-card:nth-child(4) { --stagger: 120ms; }
+    .tech-card:nth-child(5) { --stagger: 160ms; }
+    .tech-card:nth-child(6) { --stagger: 200ms; }
+    .tech-card:nth-child(7) { --stagger: 240ms; }
+    .tech-card:nth-child(8) { --stagger: 280ms; }
+    .tech-card:nth-child(9) { --stagger: 320ms; }
+    .tech-card:nth-child(10) { --stagger: 360ms; }
+    .tech-card:nth-child(11) { --stagger: 400ms; }
+    .tech-card:nth-child(12) { --stagger: 440ms; }
+    .tech-card:nth-child(13) { --stagger: 480ms; }
+    .tech-card:nth-child(14) { --stagger: 520ms; }
+
+    /* Scroll-revealed cards: pop in with spring */
+    @keyframes card-pop {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .tech-card.in-view {
+      animation: card-pop 0.45s cubic-bezier(0.22,1,0.36,1) var(--stagger, 0ms) both;
+    }
+
+    /* Project access indicator */
+    .proj-access {
+      margin-top: auto;
+      padding-top: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      display: block;
+    }
+    .proj-link { color: var(--accent); }
+    .proj-link:hover { text-decoration: underline; }
+
+    /* Exp card: clip timeline dot to have ring pulse */
+    .timeline-item.current .exp-card {
+      border-left-color: rgba(245,158,11,0.2);
+    }
+    /* Inline style cleanup helpers */
+    .about-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .exp-product-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .exp-meta-row { display: flex; align-items: center; gap: 8px; }
+
+    /* Project chip — raw inline list, no boxes */
+    .proj-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-bottom: 18px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .proj-chip {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 4px 14px 4px 0;
+      position: relative;
+      background: none;
+      border: none;
+    }
+    .proj-chip + .proj-chip::before {
+      content: '/';
+      color: var(--border);
+      margin-right: 14px;
+      font-size: 13px;
+    }
+    .proj-chip .chip-icon { font-size: 11px; line-height: 1; }
+    .proj-chip .chip-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .proj-chip:hover .chip-name { color: var(--text); }
+    .proj-chip .chip-type { display: none; }
+
     /* Responsive */
     /* ── RESPONSIVE ─────────────────────────────── */
 
@@ -743,15 +901,15 @@
       .exp-desc { font-size: 13px; }
       .badge[style*="float:right"] { float: none !important; display: inline-block; margin-top: 4px; }
       .exp-card div[style*="display:flex;gap:10px"] { flex-direction: column; }
-      .exp-tags { gap: 6px; }
-      .tag { font-size: 10px; padding: 3px 8px; }
+      .exp-tags { gap: 10px; }
+      .tag { font-size: 10px; }
 
       /* Tech grid */
-      .tech-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
-      .tech-card { padding: 14px; }
-      .tech-icon { font-size: 20px; margin-bottom: 6px; }
-      .tech-name { font-size: 11px; }
-      .tech-cat { font-size: 10px; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0; }
+      .tech-card { padding: 14px 12px; }
+      .tech-icon { font-size: 18px; margin-bottom: 6px; }
+      .tech-name { font-size: 10px; }
+      .tech-cat { font-size: 9px; }
 
       /* Projects */
       .projects-grid { grid-template-columns: 1fr !important; }
@@ -778,7 +936,7 @@
     @media (max-width: 420px) {
       h1 { font-size: 24px; letter-spacing: -0.5px; }
       .hero-desc { font-size: 13px; }
-      .tech-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 6px; }
+      .tech-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0; }
       .tech-card { padding: 12px; }
       .terminal-badge { font-size: 9px; }
       .exp-card { padding: 14px; }
@@ -1094,6 +1252,15 @@ nav a.active { color: var(--accent); }
 }
 #page-flash.flash { opacity: 0.08; }
 
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
   </style>
   <script>
     const texts = ["ffatahilah@portolio", "Backend Developer"];
@@ -1183,7 +1350,7 @@ nav a.active { color: var(--accent); }
     <section id="hero" class="hero-reveal">
       <div class="hero-top">
         <img src="https://raw.githubusercontent.com/ffatahilah/ffatahilah.github.io/refs/heads/main/photo.png" alt="Fahrih Fatahilah" class="hero-avatar">
-        <div style="text-align:right;">
+        <div>
           <h1 class="glitch" data-text="Hello, I build robust backend systems.">
             <span class="dim">Hello,</span> I build<br>
             <span class="accent">robust</span> back<span class="blue">end</span><br>
@@ -1245,7 +1412,7 @@ nav a.active { color: var(--accent); }
             &mdash; and mentoring junior engineers along the way.
           </p>
 		  
-          <div class="about-line" style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <div class="about-line about-badges">
             <span class="badge badge-green">Backend Dev</span>
             <span class="badge badge-blue">Java / Spring Boot</span>
             <span class="badge badge-purple">Microservices</span>
@@ -1320,19 +1487,19 @@ nav a.active { color: var(--accent); }
               </div>
             </div>
 
-            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:8px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128242;</span>
+            <div class="proj-chips">
+              <div class="proj-chip">
+                <span class="chip-icon">📱</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--accent);">Digi by bank bjb</div>
-                  <div style="font-size:11px;color:var(--muted);">Digital Banking App</div>
+                  <div class="chip-name">Digi by bank bjb</div>
+                  <div class="chip-type">Digital Banking App</div>
                 </div>
               </div>
-              <div style="display:flex;align-items:center;gap:8px;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128179;</span>
+              <div class="proj-chip">
+                <span class="chip-icon">💳</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--blue);">Digicash Merchant bjb</div>
-                  <div style="font-size:11px;color:var(--muted);">Merchant Payment Platform</div>
+                  <div class="chip-name">Digicash Merchant bjb</div>
+                  <div class="chip-type">Merchant Payment Platform</div>
                 </div>
               </div>
             </div>
@@ -1370,26 +1537,26 @@ nav a.active { color: var(--accent); }
                 <span class="badge badge-blue" style="float:right;margin-top:8px;">2 yrs 8 mos</span>
               </div>
             </div>
-			<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:8px;background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128242;</span>
+			<div class="proj-chips">
+              <div class="proj-chip">
+                <span class="chip-icon">📱</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--accent);">Digi by bank bjb</div>
-                  <div style="font-size:11px;color:var(--muted);">Digital Banking App</div>
+                  <div class="chip-name">Digi by bank bjb</div>
+                  <div class="chip-type">Digital Banking App</div>
                 </div>
               </div>
-              <div style="display:flex;align-items:center;gap:8px;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128179;</span>
+              <div class="proj-chip">
+                <span class="chip-icon">💳</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--blue);">Digicash Merchant bjb</div>
-                  <div style="font-size:11px;color:var(--muted);">Merchant Payment Platform</div>
+                  <div class="chip-name">Digicash Merchant bjb</div>
+                  <div class="chip-type">Merchant Payment Platform</div>
                 </div>
               </div>
-			  <div style="display:flex;align-items:center;gap:8px;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128179;</span>
+			  <div class="proj-chip">
+                <span class="chip-icon">💳</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--blue);">Kartu Kredit Indonesia - bank bjb</div>
-                  <div style="font-size:11px;color:var(--muted);">Kartu Kredit Indonesia - bank bjb</div>
+                  <div class="chip-name">Kartu Kredit Indonesia - bank bjb</div>
+                  <div class="chip-type">Credit Card Platform</div>
                 </div>
               </div>
             </div>
@@ -1429,13 +1596,15 @@ nav a.active { color: var(--accent); }
               </div>
             </div>
 			
-			<div style="display:flex;align-items:center;gap:8px;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128179;</span>
+			<div class="proj-chips">
+              <div class="proj-chip">
+                <span class="chip-icon">🗺️</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--blue);">Visual Inspection System (VIS) JICA Project For Ministry of Public Works and Housing</div>
-                  <div style="font-size:11px;color:var(--muted);">GIS Application</div>
+                  <div class="chip-name">Visual Inspection System — JICA</div>
+                  <div class="chip-type">GIS Application · Ministry of Public Works</div>
                 </div>
               </div>
+            </div>
             <p class="exp-desc">
               In charge of Geographic Information System development for JICA 
               (Japan International Cooperation Agency), building mobile GIS solutions
@@ -1465,15 +1634,19 @@ nav a.active { color: var(--accent); }
               </div>
             </div>
 			
-			<div style="display:flex;align-items:center;gap:8px;background:rgba(0,136,255,0.08);border:1px solid rgba(0,136,255,0.25);border-radius:6px;padding:8px 14px;">
-                <span style="font-size:18px;">&#128179;</span>
+			<div class="proj-chips">
+              <div class="proj-chip">
+                <span class="chip-icon">📱</span>
                 <div>
-                  <div style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--blue);">BPRKS Mobile Banking</div>
-                  <div style="font-size:11px;color:var(--muted);">Digital Banking App</div>
+                  <div class="chip-name">BPRKS Mobile Banking</div>
+                  <div class="chip-type">Digital Banking App</div>
                 </div>
               </div>
+            </div>
             <p class="exp-desc">
-              Develop an mobile banking apps 
+              Developed a native Android mobile banking application for BPR Kesejahteraan (BPRKS),
+              implementing core banking features including account overview, fund transfer, and
+              transaction history. Built with Java following clean architecture principles.
             </p>
             <div class="exp-tags">
               <span class="tag">Android</span>
@@ -1579,93 +1752,105 @@ nav a.active { color: var(--accent); }
 
       <div class="projects-grid">
         <div class="project-card">
+          <span class="proj-num">01</span>
           <span class="project-icon">🏦</span>
           <div class="project-title">Multichannel Mobile Banking</div>
           <p class="project-desc">
-            Developed a full-stack multichannel mobile banking platform using Spring Boot 
-            microservices architecture, handling transactions, authentication, and real-time 
-            account management for banking clients.
+            Full-stack multichannel mobile banking platform using Spring Boot microservices,
+            handling transactions, authentication, and real-time account management
+            for banking clients at PT. Adi Data Informatika.
           </p>
           <div class="exp-tags">
             <span class="tag">Java</span>
             <span class="tag">Spring Boot</span>
             <span class="tag">Microservices</span>
           </div>
+          <div class="proj-access">🔒 Internal — bank bjb production system</div>
         </div>
 
         <div class="project-card">
+          <span class="proj-num">02</span>
           <span class="project-icon">🔬</span>
           <div class="project-title">Banking Stress Test Mock App</div>
           <p class="project-desc">
-            Built a mock mobile banking application specifically designed to simulate 
-            high-load scenarios, enabling clients to perform comprehensive stress testing 
-            of their banking infrastructure.
+            Mock mobile banking application simulating real user flows under high-load
+            conditions — built specifically for client infrastructure stress testing
+            and performance benchmarking before production launch.
           </p>
           <div class="exp-tags">
             <span class="tag">Java</span>
             <span class="tag">Load Testing</span>
             <span class="tag">Banking</span>
           </div>
+          <div class="proj-access">🔒 Internal — client NDA</div>
         </div>
 
         <div class="project-card">
+          <span class="proj-num">03</span>
           <span class="project-icon">🗺️</span>
           <div class="project-title">JICA GIS Mobile App</div>
           <p class="project-desc">
-            Geographic Information System application developed for JICA (Japan International 
-            Cooperation Agency), handling spatial data visualization and location-based 
-            services on Android.
+            Geographic Information System mobile application for JICA (Japan International
+            Cooperation Agency) — spatial data visualization and location-based field
+            inspection tools for Indonesia's Ministry of Public Works.
           </p>
           <div class="exp-tags">
             <span class="tag">Android</span>
             <span class="tag">GIS</span>
             <span class="tag">JICA</span>
           </div>
+          <div class="proj-access">🔒 Government project — PT. Mediatama</div>
         </div>
 
         <div class="project-card">
+          <span class="proj-num">04</span>
           <span class="project-icon">🔍</span>
           <div class="project-title">Elasticsearch Integration</div>
           <p class="project-desc">
-            Designed and implemented Elasticsearch-powered search and analytics layer 
-            for banking applications, enabling advanced full-text search, aggregations, 
-            and real-time data insights.
+            Search and analytics layer built on top of Elasticsearch for banking
+            applications — full-text search, real-time aggregations, and log analytics
+            across microservices at scale.
           </p>
           <div class="exp-tags">
             <span class="tag">Elasticsearch</span>
             <span class="tag">Analytics</span>
             <span class="tag">Search</span>
           </div>
+          <div class="proj-access">🔒 Internal — bank bjb</div>
         </div>
 
         <div class="project-card">
+          <span class="proj-num">05</span>
           <span class="project-icon">🐳</span>
           <div class="project-title">Docker Swarm Infrastructure</div>
           <p class="project-desc">
-            Set up and maintained container orchestration using Docker Swarm for 
-            microservices deployment, ensuring high availability, load balancing, and 
-            zero-downtime deployments in production environments.
+            Container orchestration setup using Docker Swarm for microservices
+            deployment — high availability, rolling updates, and zero-downtime
+            deployments across banking production environments.
           </p>
           <div class="exp-tags">
             <span class="tag">Docker</span>
             <span class="tag">Swarm</span>
-            
+            <span class="tag">DevOps</span>
           </div>
+          <div class="proj-access">🔒 Internal infrastructure</div>
         </div>
 
         <div class="project-card">
+          <span class="proj-num">06</span>
           <span class="project-icon">📱</span>
           <div class="project-title">Android Mobile Applications</div>
           <p class="project-desc">
-            Native Android application development across multiple client engagements, 
-            building feature-rich mobile experiences with clean architecture and 
-            modern Android development practices.
+            Native Android development across multiple client engagements —
+            BPRKS Mobile Banking (PT. Dwidasa), VIS GIS App (JICA), and
+            internal tooling for banking operations.
           </p>
           <div class="exp-tags">
             <span class="tag">Android</span>
             <span class="tag">Java</span>
             <span class="tag">Mobile</span>
           </div>
+          <a href="https://linkedin.com/in/fahrih-fatahilah" target="_blank" rel="noopener" class="proj-access proj-link">↗ Ask on LinkedIn</a>
         </div>
       </div>
     </section>
@@ -1705,8 +1890,12 @@ nav a.active { color: var(--accent); }
   </main>
 
   <footer>
-    <span>© 2026 Backend Developer · Bandung, Indonesia</span>
-    <span>Built with HTML · CSS · ☕ Java spirit</span>
+    <span>© 2026 Fahrih Fatahilah · Bandung, Indonesia</span>
+    <div style="display:flex;gap:24px;align-items:center;">
+      <a href="https://linkedin.com/in/fahrih-fatahilah" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'">LinkedIn ↗</a>
+      <a href="https://www.instagram.com/ffatahilah__/" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'">Instagram ↗</a>
+      <a href="https://github.com/ffatahilah" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'">GitHub ↗</a>
+    </div>
   </footer>
 
   <!-- Back to top -->
@@ -1803,6 +1992,22 @@ contactObs.observe(document.querySelector('#contact'));
       el.style.transform = 'translateY(20px)';
       el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
       obs.observe(el);
+    });
+    // Tech cards get staggered pop-in via CSS animation class
+    const techObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          // Reset inline styles so CSS animation takes over
+          e.target.style.opacity = '';
+          e.target.style.transform = '';
+          e.target.style.transition = '';
+          e.target.classList.add('in-view');
+          techObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.tech-card').forEach(el => {
+      techObs.observe(el);
     });
   
     // About section observer
@@ -2004,4 +2209,4 @@ contactObs.observe(document.querySelector('#contact'));
   });
 </script>
 </body>
-</html> 
+</html>
