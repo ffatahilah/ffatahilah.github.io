@@ -1926,7 +1926,7 @@ nav a.active { color: var(--accent); }
   </main>
 
   <footer>
-    <span>© 2026 Fahrih Fatahilah · Bandung, Indonesia</span>
+    <span>© <span id="footer-year"></span> Fahrih Fatahilah · Bandung, Indonesia</span>
     <div style="display:flex;gap:24px;align-items:center;">
       <a href="https://linkedin.com/in/fahrih-fatahilah" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'">LinkedIn ↗</a>
       <a href="https://www.instagram.com/ffatahilah__/" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--dim)'">Instagram ↗</a>
@@ -2236,6 +2236,8 @@ contactObs.observe(document.querySelector('#contact'));
     themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
     localStorage.setItem('theme', next);
   });
+
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
 
   // Page flash on nav click
   const flash = document.getElementById('page-flash');
