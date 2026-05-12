@@ -29,23 +29,28 @@
 </script>
   <style>
     :root {
-      --bg: #0a0e17;
-      --bg2: #0f1420;
-      --bg3: #141926;
-      --surface: #1a2035;
-      --surface2: #212740;
-      --border: #2a3450;
-      --accent: #00d4aa;
-      --accent2: #0088ff;
-      --accent3: #7c3aed;
-      --text: #e2e8f4;
-      --muted: #7a8ab0;
-      --dim: #4a5570;
-      --green: #00d4aa;
-      --blue: #0088ff;
-      --purple: #7c3aed;
-      --yellow: #f59e0b;
-      --red: #ef4444;
+      /* ── Dual analog film palette ──
+         Shadows  → foto 1: underexposed 35mm, olive-green dark
+         Midtones → foto 2: warm Bali concrete, dusty brown-grey
+         Accent   → foto 2: faded terracotta orange, paving brick
+         Highlight→ foto 2: overexposed sky, warm off-white        */
+      --bg:       #0f110d;
+      --bg2:      #141510;
+      --bg3:      #191a14;
+      --surface:  #221e18;
+      --surface2: #2a2520;
+      --border:   #3a3228;
+      --accent:   #c86030;   /* terracotta — foto 2 tembok oranye */
+      --accent2:  #7a9888;   /* dusty teal — pintu biru pudar foto 2 */
+      --accent3:  #8a6030;   /* amber — batik & buah di pasar */
+      --text:     #d0c8b8;   /* warm off-white — langit overexposed */
+      --muted:    #7a6e5e;   /* concrete midtone */
+      --dim:      #4a4035;   /* paving shadow */
+      --green:    #6a8858;
+      --blue:     #507880;
+      --purple:   #786068;
+      --yellow:   #c09040;
+      --red:      #b84030;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,17 +71,44 @@
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
 
-    /* Vignette — corners darker like a CRT tube */
+    /* Vignette — sangat subtle, hanya hint di pinggir */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at center,
-        transparent 55%,
-        rgba(0,0,0,0.55) 100%
+      background: radial-gradient(ellipse 110% 90% at 50% 50%,
+        transparent 60%,
+        rgba(4,8,4,0.25) 100%
       );
       pointer-events: none;
       z-index: 9989;
+    }
+
+    /* Light leak — foto 2: streak oranye dari pojok kiri bawah, tanpa batas */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 55% at -5% 105%,
+          rgba(240, 75, 10, 0.60) 0%,
+          rgba(215, 55, 5,  0.30) 25%,
+          rgba(180, 45, 0,  0.12) 50%,
+          rgba(140, 35, 0,  0.04) 70%,
+          transparent 85%
+        );
+      pointer-events: none;
+      z-index: 9987;
+      mix-blend-mode: screen;
+      animation: leak-breathe 9s ease-in-out infinite;
+    }
+    @keyframes leak-breathe {
+      0%, 100% { opacity: 1;    transform: scaleX(1); }
+      50%       { opacity: 0.75; transform: scaleX(1.04); }
+    }
+    @keyframes leak-breathe {
+      0%, 100% { opacity: 1;    transform: scale(1); }
+      50%       { opacity: 0.7; transform: scale(1.08); }
     }
 
     /* Noise canvas — injected by JS, sits on top of everything */
@@ -1143,9 +1175,37 @@
   position: fixed; inset: 0; z-index: 9999;
   background: var(--bg); display: flex;
   flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.5s, visibility 0.5s;
+  transition: opacity 0.6s, visibility 0.6s;
+  overflow: hidden;
 }
 #preloader.hide { opacity: 0; visibility: hidden; }
+
+/* Grain canvas inside preloader */
+#preloader-grain {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  image-rendering: pixelated;
+}
+
+/* Light leak inside preloader */
+.preloader-leak {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at -5% 108%,
+      rgba(240, 75, 10, 0.70) 0%,
+      rgba(210, 55, 5,  0.38) 22%,
+      rgba(175, 42, 0,  0.15) 45%,
+      rgba(130, 30, 0,  0.05) 65%,
+      transparent 80%
+    );
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: leak-breathe 9s ease-in-out infinite;
+}
 .loader-text {
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px; color: var(--accent);
@@ -1189,28 +1249,6 @@ nav ul { position: relative; }
 }
 nav a.active { color: var(--accent); }
 
-/* Custom cursor */
-.cur, .cur-dot {
-  position: fixed; pointer-events: none; z-index: 9998;
-  border-radius: 50%; top: 0; left: 0;
-  mix-blend-mode: difference;
-}
-.cur {
-  width: 32px; height: 32px;
-  border: 1.5px solid var(--accent);
-  transition: transform 0.15s ease, width 0.2s, height 0.2s;
-  margin: -16px 0 0 -16px;
-}
-.cur-dot {
-  width: 6px; height: 6px;
-  background: var(--accent);
-  margin: -3px 0 0 -3px;
-  transition: transform 0.05s;
-}
-.cur.hover { width: 48px; height: 48px; margin: -24px 0 0 -24px; opacity: 0.5; }
-@media (max-width: 768px) { .cur, .cur-dot { display: none; } }
-@media (pointer: coarse) { .cur, .cur-dot { display: none; } }
-
 /* Page transition overlay */
 #page-flash {
   position: fixed; inset: 0; z-index: 9997;
@@ -1227,14 +1265,21 @@ nav a.active { color: var(--accent); }
       width: 100vw; height: 100vh;
       pointer-events: none;
       z-index: 9988;
-      opacity: 0.055;
-      mix-blend-mode: screen;
+      opacity: 0.025;
+      mix-blend-mode: overlay;
       image-rendering: pixelated;
     }
 
-    /* Nav logo: subtle phosphor RGB bleed */
+    /* Headings: warm film halation — terracotta + dusty teal */
+    h1, h2 {
+      text-shadow:
+        1px  0 0 rgba(200, 80, 20, 0.22),
+        -1px 0 0 rgba(80, 140, 120, 0.15);
+    }
+
+    /* Nav logo: warm leak bleed */
     .nav-logo {
-      text-shadow: 1px 0 0 rgba(255,0,60,0.2), -1px 0 0 rgba(0,220,255,0.2);
+      text-shadow: 1px 0 0 rgba(200,80,20,0.28), -1px 0 0 rgba(80,150,120,0.2);
     }
 
     /* CRT flicker — very subtle brightness oscillation on the whole page */
@@ -1294,13 +1339,12 @@ nav a.active { color: var(--accent); }
   </script>
 </head>
 <body>
-<!-- Custom cursor -->
-<div class="cur" id="cur"></div>
-<div class="cur-dot" id="cur-dot"></div>
 <!-- Page flash -->
 <div id="page-flash"></div>
 <!-- Preloader -->
 <div id="preloader">
+  <canvas id="preloader-grain" aria-hidden="true"></canvas>
+  <div class="preloader-leak"></div>
   <div class="loader-text">ffatahilah@portfolio:~$ sudo ./portfolio.sh</div>
   <div class="loader-bar"><div class="loader-bar-inner"></div></div>
 </div>
@@ -2135,6 +2179,32 @@ contactObs.observe(document.querySelector('#contact'));
     }, 1400);
   });
 
+  // Preloader grain — warm tinted, stops after preloader fades
+  (function() {
+    const c = document.getElementById('preloader-grain');
+    if (!c) return;
+    const W = 256, H = 256;
+    c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    const img = ctx.createImageData(W, H);
+    const d   = img.data;
+    let running = true;
+    function tick() {
+      if (!running) return;
+      for (let i = 0; i < d.length; i += 4) {
+        const b = Math.random() * 255 | 0;
+        d[i]   = Math.min(255, b + 14 | 0);
+        d[i+1] = Math.min(255, b + 6  | 0);
+        d[i+2] = Math.max(0,   b - 22 | 0);
+        d[i+3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      requestAnimationFrame(tick);
+    }
+    tick();
+    setTimeout(() => { running = false; }, 1600);
+  })();
+
   // Scroll progress bar
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
@@ -2166,22 +2236,6 @@ contactObs.observe(document.querySelector('#contact'));
     themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
     localStorage.setItem('theme', next);
   });
-
-  // Custom cursor
-  const cur = document.getElementById('cur');
-  const curDot = document.getElementById('cur-dot');
-  if (cur && window.matchMedia('(pointer:fine)').matches) {
-    document.addEventListener('mousemove', e => {
-      cur.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
-      curDot.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
-    });
-    document.querySelectorAll('a,button,.btn,.tech-card,.project-card,.exp-card').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
-    });
-    document.documentElement.style.cursor = 'none';
-    document.querySelectorAll('a,button').forEach(el => el.style.cursor = 'none');
-  }
 
   // Page flash on nav click
   const flash = document.getElementById('page-flash');
@@ -2219,12 +2273,12 @@ contactObs.observe(document.querySelector('#contact'));
     scheduleTear();
 
     function drawNoise() {
-      // Fill every pixel with random grey — pure film grain
+      // Warm dusty grain — brown-orange tint from foto 2 concrete + paving
       for (let i = 0; i < data.length; i += 4) {
-        const v = Math.random() * 255 | 0;
-        data[i]     = v;  // R
-        data[i + 1] = v;  // G
-        data[i + 2] = v;  // B
+        const base = Math.random() * 255 | 0;
+        data[i]     = Math.min(255, base + 14 | 0);  // R — warm/orange push
+        data[i + 1] = Math.min(255, base + 6  | 0);  // G — slight warm
+        data[i + 2] = Math.max(0,   base - 22 | 0);  // B — pulled down hard
         data[i + 3] = 255;
       }
       ctx.putImageData(img, 0, 0);
