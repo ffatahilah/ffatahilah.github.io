@@ -66,29 +66,8 @@
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
 
-    /* CRT scanlines — full page, always on */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.13) 3px,
-        rgba(0,0,0,0.13) 4px
-      );
-      pointer-events: none;
-      z-index: 9990;
-      animation: scanline-roll 12s linear infinite;
-    }
-    @keyframes scanline-roll {
-      0%   { background-position: 0 0; }
-      100% { background-position: 0 200px; }
-    }
-
     /* Vignette — corners darker like a CRT tube */
-    body::after {
+    body::before {
       content: '';
       position: fixed;
       inset: 0;
@@ -269,25 +248,8 @@
       93% { opacity: 0; }
     }
 
-    /* Hero: subtle horizontal interlace — like a CRT losing sync */
-    #hero::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 1px,
-        rgba(0,212,170,0.015) 1px,
-        rgba(0,212,170,0.015) 2px
-      );
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    /* Remove the old noise-flicker pseudo */
-    #hero::before { display: none; }
     #hero { position: relative; overflow: hidden; }
+    #hero::after { display: none; }
 
     .hero-desc {
       font-size: 18px;
@@ -2294,6 +2256,137 @@ contactObs.observe(document.querySelector('#contact'));
     // Respect prefers-reduced-motion
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       requestAnimationFrame(drawNoise);
+    }
+  })();
+
+  // ── RETRO TV MOMENT ─────────────────────────────────────────────
+  // Every 1.5–4 minutes, the whole page does a full analog TV breakdown:
+  // static burst → rolling bars → signal loss → snap back
+  (function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'retro-tv-overlay';
+    Object.assign(overlay.style, {
+      position: 'fixed', inset: '0',
+      zIndex: '99999', pointerEvents: 'none',
+      opacity: '0', display: 'none',
+    });
+    document.body.appendChild(overlay);
+
+    // Inject keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes tv-static {
+        0%   { background-position: 0 0; }
+        100% { background-position: 0 256px; }
+      }
+      @keyframes tv-roll {
+        0%   { transform: translateY(0); }
+        100% { transform: translateY(-100vh); }
+      }
+      @keyframes tv-flicker {
+        0%,100% { opacity: 0.92; }
+        20%     { opacity: 0.3;  }
+        21%     { opacity: 0.85; }
+        45%     { opacity: 0.1;  }
+        46%     { opacity: 0.8;  }
+        70%     { opacity: 0.4;  }
+        71%     { opacity: 0.9;  }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Build noise texture via small canvas (same approach as grain)
+    function makeStaticCanvas() {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const x = c.getContext('2d');
+      const id = x.createImageData(256, 256);
+      const d  = id.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const v = Math.random() * 255 | 0;
+        d[i]=d[i+1]=d[i+2]=v; d[i+3]=255;
+      }
+      x.putImageData(id, 0, 0);
+      return c.toDataURL();
+    }
+
+    function runTvMoment() {
+      const phases = [
+        // 1. Brief flicker — signal struggling
+        () => {
+          overlay.style.display = 'block';
+          overlay.style.background = 'transparent';
+          overlay.style.animation = 'tv-flicker 0.4s steps(1) forwards';
+          overlay.style.opacity = '1';
+          // apply flicker to body
+          document.body.style.animation = 'tv-flicker 0.4s steps(1) forwards';
+        },
+        // 2. Full static burst — channel lost
+        () => {
+          document.body.style.animation = '';
+          const src = makeStaticCanvas();
+          overlay.style.animation = 'tv-static 0.05s steps(1) infinite';
+          overlay.style.background = `url(${src}) repeat`;
+          overlay.style.backgroundSize = '256px 256px';
+          overlay.style.opacity = '0.92';
+        },
+        // 3. Rolling bar — vertical sync lost
+        () => {
+          overlay.style.animation = '';
+          overlay.style.opacity = '0.7';
+          // Bright horizontal band rolling down
+          overlay.style.background = `
+            linear-gradient(
+              to bottom,
+              transparent 0%,
+              rgba(255,255,255,0.18) 30%,
+              rgba(200,255,240,0.25) 50%,
+              rgba(255,255,255,0.18) 70%,
+              transparent 100%
+            )
+          `;
+          overlay.style.backgroundSize = '100% 60vh';
+          overlay.style.animation = 'tv-roll 0.6s linear 2';
+        },
+        // 4. White flash — set coming back on
+        () => {
+          overlay.style.animation = '';
+          overlay.style.background = 'rgba(255,255,255,0.6)';
+          overlay.style.opacity = '0.6';
+        },
+        // 5. Snap off
+        () => {
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.style.background = 'transparent';
+            overlay.style.animation = '';
+          }, 200);
+        }
+      ];
+
+      const durations = [400, 600, 1300, 120, 200];
+      let i = 0;
+      function next() {
+        if (i >= phases.length) return;
+        phases[i]();
+        setTimeout(next, durations[i]);
+        i++;
+      }
+      next();
+    }
+
+    function scheduleNext() {
+      // Fire every 90–240 seconds (1.5–4 minutes), randomly
+      const delay = 90000 + Math.random() * 150000;
+      setTimeout(() => {
+        if (!document.hidden) runTvMoment();
+        scheduleNext();
+      }, delay);
+    }
+
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      scheduleNext();
     }
   })();
 </script>
